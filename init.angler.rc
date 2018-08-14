@@ -20,6 +20,7 @@ import init.angler.sensorhub.rc
 
 on early-init
     mount debugfs debugfs /sys/kernel/debug
+    chmod 0755 /sys/kernel/debug
     chown system system /sys/kernel/debug/kgsl/proc
 
 on init
@@ -151,6 +152,11 @@ on boot
     # Vibrator intensity
     chown system system /sys/devices/virtual/timed_output/vibrator/vmax_mv_light
     chown system system /sys/devices/virtual/timed_output/vibrator/vmax_mv_strong
+
+    # WebView
+    chmod 0755 /sys/kernel/debug/tracing
+    chmod 0644 /sys/kernel/debug/tracing/trace_marker
+    chown webview_zygote webview_zygote /sys/kernel/debug/tracing/trace_marker
 
 on property:init.svc.per_mgr=running
     start per_proxy

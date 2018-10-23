@@ -263,9 +263,8 @@ NANOHUB_SENSORHAL_DIRECT_REPORT_ENABLED := true
 PRODUCT_PACKAGES += \
     sensors.angler \
     activity_recognition.angler \
-    context_hub.default \
     android.hardware.sensors@1.0-impl \
-    android.hardware.contexthub@1.0-impl \
+    android.hardware.contexthub@1.0-impl.nanohub
 
 # new gatekeeper HAL
 PRODUCT_PACKAGES += \
@@ -312,8 +311,8 @@ PRODUCT_PACKAGES += \
     libnfc-nci \
     NfcNci \
     Tag \
-    nfc_nci.angler \
     android.hardware.nfc@1.0-impl \
+    nfc_nci.msm8994
 
 # Keymaster HAL
 PRODUCT_PACKAGES += \
@@ -340,6 +339,11 @@ PRODUCT_PACKAGES += \
 #USB HAL
 PRODUCT_PACKAGES += \
     android.hardware.usb@1.0-service
+
+#Vendor Patch Level
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.vendor.build.security_patch=2018-10-05
+
 # Library used for VTS tests  (only for userdebug and eng builds)
 ifneq (,$(filter userdebug eng, $(TARGET_BUILD_VARIANT)))
 # For VTS profiling.
@@ -349,8 +353,8 @@ PRODUCT_PACKAGES += \
 endif
 
 PRODUCT_COPY_FILES += \
-    device/huawei/angler/nfc/libnfc-brcm.conf:system/etc/libnfc-brcm.conf \
-    device/huawei/angler/nfc/libnfc-nxp.conf:system/etc/libnfc-nxp.conf
+    device/huawei/angler/nfc/libnfc-nci.conf:$(TARGET_COPY_OUT_VENDOR)/etc/libnfc-nci.conf \
+    device/huawei/angler/nfc/libnfc-nxp.conf:$(TARGET_COPY_OUT_VENDOR)/etc/libnfc-nxp.conf
 
 DEVICE_PACKAGE_OVERLAYS := \
     device/huawei/angler/overlay
@@ -567,8 +571,8 @@ PRODUCT_PROPERTY_OVERRIDES += \
 $(call inherit-product-if-exists, hardware/qcom/msm8994/msm8994.mk)
 $(call inherit-product-if-exists, vendor/qcom/gpu/msm8994/msm8994-gpu-vendor.mk)
 
-# copy wlan configs
-$(call inherit-product-if-exists, hardware/broadcom/wlan/bcmdhd/config/config-bcm.mk)
+# copy wlan firmware
+$(call inherit-product-if-exists, hardware/broadcom/wlan/bcmdhd/firmware/bcm4358/device-bcm.mk)
 
 # GPS configuration
 PRODUCT_COPY_FILES += \
@@ -580,8 +584,7 @@ ifeq ($(TARGET_BUILD_VARIANT),user)
 
   # setup dm-verity configs.
   PRODUCT_SYSTEM_VERITY_PARTITION := /dev/block/platform/soc.0/f9824900.sdhci/by-name/system
-  # don't check verity on vendor partition as we don't compile it with the boot and system image
-  # PRODUCT_VENDOR_VERITY_PARTITION := /dev/block/platform/soc.0/f9824900.sdhci/by-name/vendor
+  PRODUCT_VENDOR_VERITY_PARTITION := /dev/block/platform/soc.0/f9824900.sdhci/by-name/vendor
   $(call inherit-product, build/target/product/verity.mk)
 endif
 

@@ -24,7 +24,7 @@ TARGET_CPU_ABI2 :=
 TARGET_CPU_VARIANT := cortex-a53
 
 TARGET_2ND_ARCH := arm
-TARGET_2ND_ARCH_VARIANT := armv7-a-neon
+TARGET_2ND_ARCH_VARIANT := armv8-a
 TARGET_2ND_CPU_ABI := armeabi-v7a
 TARGET_2ND_CPU_ABI2 := armeabi
 TARGET_2ND_CPU_VARIANT := cortex-a53.a57
@@ -47,6 +47,7 @@ BOARD_RAMDISK_OFFSET     := 0x02000000
 
 BOARD_KERNEL_CMDLINE := androidboot.hardware=angler androidboot.console=ttyHSL0 msm_rtb.filter=0x37 ehci-hcd.park=3 lpm_levels.sleep_disabled=1 boot_cpus=0-3 no_console_suspend
 BOARD_KERNEL_CMDLINE += loop.max_part=7
+BOARD_KERNEL_CMDLINE += androidboot.selinux=permissive
 
 BOARD_MKBOOTIMG_ARGS := --ramdisk_offset $(BOARD_RAMDISK_OFFSET) --tags_offset $(BOARD_KERNEL_TAGS_OFFSET)
 
@@ -62,8 +63,6 @@ BOARD_HAVE_BLUETOOTH_BCM := true
 BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := device/huawei/angler/bluetooth
 
 BOARD_USES_SECURE_SERVICES := true
-
-BOARD_NEEDS_VENDORIMAGE_SYMLINK := true
 
 TARGET_NO_BOOTLOADER := true
 TARGET_NO_RADIOIMAGE := true
@@ -120,17 +119,18 @@ BOARD_SYSTEMIMAGE_EXTFS_INODE_COUNT := 4096
 BOARD_USERDATAIMAGE_PARTITION_SIZE := 26503790080
 BOARD_CACHEIMAGE_PARTITION_SIZE := 104857600
 BOARD_CACHEIMAGE_FILE_SYSTEM_TYPE := ext4
+BOARD_VENDORIMAGE_PARTITION_SIZE := 209715200
+BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
 BOARD_FLASH_BLOCK_SIZE := 131072
 
 TARGET_AUX_OS_VARIANT_LIST := angler
 
 TARGET_RECOVERY_FSTAB = device/huawei/angler/fstab.angler
-# write vendor modules to system
-TARGET_COPY_OUT_VENDOR := system
+TARGET_COPY_OUT_VENDOR := vendor
 TARGET_RELEASETOOLS_EXTENSIONS := device/huawei/angler
 
-BOARD_SEPOLICY_DIRS += \
-	device/huawei/angler/sepolicy
+#BOARD_SEPOLICY_DIRS += \
+#	device/huawei/angler/sepolicy
 
 TARGET_USES_64_BIT_BINDER := true
 
@@ -160,9 +160,6 @@ WIFI_DRIVER_FW_PATH_AP := "/vendor/firmware/fw_bcmdhd_apsta.bin"
 BOARD_VENDOR_QCOM_GPS_LOC_API_HARDWARE := $(TARGET_BOARD_PLATFORM)
 BOARD_VENDOR_QCOM_LOC_PDK_FEATURE_SET := true
 
-#NFC
-NXP_CHIP_TYPE := 2
-
 # Testing related defines
 BOARD_PERFSETUP_SCRIPT := platform_testing/scripts/perf-setup/angler-setup.sh
 
@@ -170,5 +167,7 @@ TARGET_FS_CONFIG_GEN += device/huawei/angler/config.fs
 
 DEVICE_MANIFEST_FILE := device/huawei/angler/manifest.xml
 DEVICE_MATRIX_FILE := device/huawei/angler/compatibility_matrix.xml
+
+PRODUCT_USE_VNDK_OVERRIDE := false
 
 -include vendor/huawei/angler/BoardConfigVendor.mk

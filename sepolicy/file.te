@@ -39,9 +39,8 @@ type sysfs_lcd_mipi, fs_type, sysfs_type;
 
 type nfc_vendor_data_file, file_type, data_file_type;
 
-<<<<<<< HEAD
 type tap2wake_dev, fs_type, sysfs_type;
-=======
+
 # type for mtp
 type sysfs_g_android_param, fs_type, sysfs_type;
 # battery

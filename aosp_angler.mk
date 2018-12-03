@@ -26,13 +26,17 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/aosp_base_telephony.mk)
 
 PRODUCT_NAME := aosp_angler
 PRODUCT_DEVICE := angler
-PRODUCT_BRAND := Android
-PRODUCT_MODEL := AOSP on angler
+PRODUCT_BRAND := Google
+PRODUCT_MODEL := Nexus 6P
 PRODUCT_MANUFACTURER := Huawei
 PRODUCT_RESTRICT_VENDOR_FILES := true
 
 $(call inherit-product, device/huawei/angler/device.mk)
 $(call inherit-product-if-exists, vendor/huawei/angler/device-vendor.mk)
+$(call inherit-product, vendor/aosp/common.mk)	
+
+# Boot animation
+TARGET_BOOT_ANIMATION_RES := 1080
 
 PRODUCT_PACKAGES += \
     Launcher3 \
@@ -40,3 +44,10 @@ PRODUCT_PACKAGES += \
 
 PRODUCT_PACKAGES += \
     AOSPLinks
+
+# Device Fingerprint
+PRODUCT_BUILD_PROP_OVERRIDES += \
+    PRODUCT_NAME=angler \
+    PRIVATE_BUILD_DESC="angler-user 8.1.0 OPM7.181105.004 5038062 release-keys"
+
+BUILD_FINGERPRINT :=  google/angler/angler:8.1.0/OPM7.181105.004/5038062:user/release-keys
